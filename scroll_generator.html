@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+       <!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    </head>
+	<style type="text/css"> 
+     #scrollcontent { 
+       border: double; 
+       overflow-y: scroll; 
+       font-family: "Courier New", Courier, monospace;
+	   white-space: pre
+     } 
+	</style>
+    <body>
+		<h1>Genesis ASCII Text Scroll Creator</h1>
+	 
+		<h4><b>Please choose text file with desired scroll contents (maximum line length 62)</b></h4>
+		<input type="file" id="input" name="file"/>
+		<br>
+		<output id="scrollcontent"></output>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        
+		<script>
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                // Great success! All the File APIs are supported.
+            } else {
+                alert('The File APIs are not fully supported in this browser.');
+            }
+			function escapeHtml(unsafe) {
+				return unsafe
+					.replace(/&/g, "&amp;")
+					.replace(/</g, "&lt;")
+					.replace(/>/g, "&gt;")
+					.replace(/"/g, "&quot;")
+					.replace(/'/g, "&#039;");
+			}
+			
+			function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+
+                // files is a FileList of File objects.
+                var output = [];
+                for (var i = 0, f; f = files[i]; i++) {
+
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+						var begintext = "     _________________________________________________________________\n    /_\\                                                               \\\n   //_\\|                                                               |\n   |\\_/___-_______-______/|________--___|\\_____-______-__|\\_____/\\____/\n    \\                                                               \\\n     |                                                               |\n";
+						var endtext = "    /                                                                /\n   /___ ____  ________ ____________________  _______________ _______/\n  |/\\  -    |/        -                    |/               -        \\\n  \\\\_|                                                                |\n   \\/________________________________________________________________/";
+						var margintext = "|";
+						const maxlinelen = 62;
+						
+						// Print top of scroll
+						output.push(begintext);
+						
+                        // Print the contents of the file
+                        var text = e.target.result;
+
+						// Split into lines, tolerating windows and unix newline
+						var lines = text.split(/[\r\n][\r\n]/g);					
+						
+                        for(var i = 0; i < lines.length; i++) {
+							var pad = maxlinelen - lines[i].length;
+							console.log("Line # " + i + " Line length: " + lines[i].length + " pad: " + pad);
+                            output.push("     " + margintext + " " + escapeHtml(lines[i])); 
+							
+							for (var j = 0; j < pad; j++) {
+								output.push(" ");
+							}
+							
+							output.push(margintext + "\n");
+                        }
+						
+						// Print bottom of scroll
+						output.push(endtext);
+						
+						document.getElementById('scrollcontent').innerHTML = output.join('');
+                    };
+
+                    reader.readAsText(f,"UTF-8");
+
+                }
+                
+            }
+
+            document.getElementById('input').addEventListener('change', handleFileSelect, false);
+        </script>
+		<h6><i>Made for the denizens of Genesis with love by Kelrhys 10/2017</i></h6>
+    </body>
+</html>
