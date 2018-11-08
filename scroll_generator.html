@@ -7,7 +7,6 @@
 
         <!-- Optional theme -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
     </head>
     <style type="text/css"> 
     #scrollcontent { 
@@ -35,8 +34,8 @@
             alert('The File APIs are not fully supported in this browser.');
         }
         function escapeHtml(unsafe) {
-			  return unsafe
-			    .replace(/&/g, "&amp;")
+            return unsafe
+                .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
@@ -56,10 +55,10 @@
                     var endtext = "    /                                                                /\n   /___ ____  ________ ____________________  _______________ _______/\n  |/\\  -    |/        -                    |/               -        \\\n  \\\\_|                                                                |\n   \\/________________________________________________________________/";
                     var margintext = "|";
                     const maxlinelen = 62;
-						
+                    
                     // Print top of scroll
                     output.push(begintext);
-						
+                    
                     // Print the contents of the file
                     var text = e.target.result;
 
@@ -69,25 +68,20 @@
                     for(var i = 0; i < lines.length; i++) {
                         var pad = maxlinelen - lines[i].length;
                         console.log("Line # " + i + " Line length: " + lines[i].length + " pad: " + pad);
-                        output.push("     " + margintext + " " + escapeHtml(lines[i])); 
-							
+                        output.push("     " + margintext + " " + escapeHtml(lines[i]));
                         for (var j = 0; j < pad; j++) {
                             output.push(" ");
-						}
-							
+                        }
                         output.push(margintext + "\n");
                     }
-						
+                    
                     // Print bottom of scroll
                     output.push(endtext);
-						
                     document.getElementById('scrollcontent').innerHTML = output.join('');
                 };
 
                 reader.readAsText(f,"UTF-8");
-
            }
-                
        }
 
        document.getElementById('input').addEventListener('change', handleFileSelect, false);
